@@ -1,0 +1,67 @@
+<div class="card m-2" id="comments-new">
+    <div class="card-body">
+        <form>
+        <!-- 닉네임 입력 -->
+        <div class="mb-3">
+            <label class="form-label">닉네임</label>   <!-- 닉네임 입력 폼 만들기 -->
+            <input type="text" class="form-control" id="new-comment-nickname">
+        </div>
+        <!-- 댓글 본문 입력 -->
+        <div class="mb-3">
+            <label class="form-label">댓글 내용</label>   <!-- 댓글 본문 입력 폼 만들기 -->
+            <textarea type="text" class="form-control" row="3"
+                   id="new-comment-body"></textarea>
+        </div>
+        <div>
+        <!-- 히든 인풋 -->
+            {{#article}}
+                <input type="hidden" id="new-comment-article-id" value="{{id}}">
+            {{/article}}
+        </div>
+        <!-- 전송 버튼 -->
+        <button type="button" class="btn btn-primary"
+                id="comment-create-btn">댓글 작성</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    {
+        const CommentCreateBtn = document.querySelector("#comment-create-btn")
+            CommentCreateBtn.addEventListener("click", function(){
+                // 새 댓글 객체 생성
+                const comment = {
+                    // 새 댓글의 닉네임
+                    nickname: document.querySelector("#new-comment-nickname").value,
+                    // 새 댓글의 본문
+                    body: document.querySelector("#new-comment-body").value,
+                    // 부모 게시글의 id
+                    articleId: document.querySelector("#new-comment-article-id").value
+                };
+                // 댓글 객체 출력
+                    console.log(comment);
+                // fetch() - 비동기 통신을 위한 API
+                const url = "/api/articles/" + comment.articleId + "/comments";
+                /*
+                fetch() 함수를 작성
+                    1) 첫 번째 전달값으로 API 주소를 가지고 있는 url을 넘김
+                    2) 두 번째 전달값으로 요청 메소드, 헤더 정보, 전송 본문을 넘김
+                        전송 본문은 comment 객체를 JSON 형태로 변환해 전송하기 위해 JSON.stringify() 메소드를 사용
+                        헤더 정보에는 전송 본문의 데이터 타입이 JSON임을 명시하는 내용
+                */
+                fetch(url, {    // 1)~ 2) fetch() 함수 작성
+                    method: "POST",     //POST 요청
+                    headers: {          //전송 본문의 데이터 타입(JSON) 정보
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(comment)   // comment 객체를 JSON 문자열로 변환해 전송
+                }).then(response => {
+                    // HTTP 응답 코드에 따른 메시지 출력
+                    const msg = (response.ok) ? "댓글이 등록됐습니다" : "댓글 등록 실패..!";   // 1. 응답 처리
+                    alert(msg);
+                    // 현재 페이지 새로고침
+                    window.location.reload();                                             // 2. 새로 고침
+                });
+            });
+    }
+</script>

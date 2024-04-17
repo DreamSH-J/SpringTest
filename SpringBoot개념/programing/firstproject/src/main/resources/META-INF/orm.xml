@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence/orm
+                 https://jakarta.ee/xml/ns/persistence/orm/orm_3_.xsd"
+                 version="3.0">
+    <named-native-query
+            name="Comment.findByNickName"
+            result-class="com.example.firstproject.entity.Comment">
+        <query>
+            <![CDATA[
+                SELECT * FROM comment WHERE nickname = :nickname
+            ]]>
+        </query>
+    </named-native-query>
+</entity-mappings>
+<!--
+<entity-mappings> 태그안에 <named-native-query>와 <query> 태그를 이용해 쿼리를 입력
+
+형식:
+<named-native-query
+        name="쿼리_수행_대상_엔티티.메소드_이름:
+        result-class="쿼리_수행_결과_반환하는_타입의_전체_패키지_경로">
+        <query>
+        <![CDATA[
+            < 쿼리 >
+        ]]>
+        </query>
+</named-native-query>
+
+name 속성에는 쿼리를 수행하는 대상 엔티티.메소드 이름 적음
+즉, CommentRepository의 findByNickName 메소드가 아래 쿼리를 수행하도록 하겠다는 뜻
+result-class 속성에는 쿼리가 반환하는 타입의 전체 패키지 경로를 적음
+<query> 태그에는 실제 수행할 쿼리를 적음
+이때 쿼리는 <![CDATA[ ... ]]> 구문 안에 적음
+<![CDATA[ ... ]] 구문은 Character DATA 즉, 파싱(구문 분석)되지 않은 문자 데이터를 쓸 때 사용
+이 구문을 사용해야 SQL 문의 값의 대소 비교 연산( > , < , ... ) 등에 문제가 생기지 않음
+
+-->

@@ -1,0 +1,819 @@
+`학습 목표
+
+* 상위 프레임워크인 스프링을 비교하며 스프링 부트 3에 대해 알아보기
+* 스프링의 컨셉인 IoC (제어의 역전), DI (의존성 주입), AOP (관점 지향 프로그래밍), PSA (이식 가능한 서비스 추상화)
+  						를 알아본 다음 스프링 부트 3 프로젝트를 만들며 스프링 부트3를 시작
+
+핵심 키워드
+
+* IoC (제어의 역전)
+
+* DI (의존성 주입)
+
+* AOP (관점 지향 프로그래밍)
+
+* PSA (이식 가능한 서비스 추상화)
+
+2,0 그림으로 이해하는 프로젝트
+
+	TestController 클래스		1) GET 요청
+					   /test					localhost:8080/test를
+					<------------				GET으로 요청
+	test() 메소드							웹 브라우저
+					------------->					
+					2) "Hellom woeld!" 문자열 반환
+	@GetMapping("/test")
+
+	@GetMapping("/test") 가 있는 test() 메소드에서 요청 처리
+
+
+	TestController 클래스가 웹 브라우저의 요청을 받아 test() 메소드를 실행하여 문자열로 반환하고 있음
+	웹 브라우저의 요청을 특정 클래스의 특정 메소드가 어떻게 처리하는지 나타냄
+
+2.1 스프링과 스프링 부트
+
+	스프링 프레임워크를 알아보고 스프링 부트를 알아보기
+	
+	스프링 프레임워크와 스프링 부트가 어떻게 다른지 알아보기
+
+**스프링의 등장
+
+	엔터프라이즈 애플리케이션	==	대규모의 복잡한 데이터를 관리하는 애플리케이션
+	
+	소프트웨어 분야가 발전하며 엔터프라이즈 애플리케이션은 점점 복잡해짐
+
+	EX) 은행 시스템을 생각해보면 몇 백만, 몇 천만의 사람이 한꺼번에 잔고 조회를 하고,
+	     입금이나 출금 요청을 하거나 새로운 통장을 개설하기도 함.
+
+	엔터프라이즈 애플리케이션은 많은 사용자의 요청을 동시에 처리해야 하므로
+	서버 성능과 안정성, 보안이 매우 중요함
+	
+	그런데 이런 것들을 신경쓰면서 사이트 기능, 즉, "비즈니스 로직"까지 개발하기는 매우 어려움
+
+	누군가 엔터프라이즈 애플리케이션을 위한 개발환경을 제공해서 기능 개발에만 집중할 수 있다면?
+
+	2003년 6월에 스프링 프레임워크 등장
+
+	스프링 프레임워크는 서버 성능, 안정성, 보안을 매우 높은 수준으로 제공하는 도구였음
+
+	개발자들은 기능 개발에 집중할 수 있게 됨
+
+**스프링을 더 쉽게 만들어주는 스프링 부트
+
+	스프링은 장점이 많은 개발 도구
+
+	하지만 단점도 있음
+
+	WHAT?
+
+	설정이 매우 복잡함
+	
+	개발팀도 이런 단점을 인식하고 보완하고자 스프링 부트를 출시(2013년 4월 0.5.0.M6 버전 첫 공개)
+
+	스프링 부트는 스프링 프레임워크를 더 쉽고 빠르게 이용할 수 있도록 만들어주는 도구
+	빠르게 스프링 프로젝트를 설정할 수 있고 
+	의존성 세트라고 불리는 스타터를 사용해 간편하게 의존성을 사용하거나 관리할 수 있음
+	
+	개발자가 조금 더 비즈니스 로직 개발에만 집중할 수 있도록 만들어주는 도구
+
+	스프링과 비교했을 때 스프링 부트의 주요 특징
+
+** 스프링 부트의 주요 특징
+
+	1) 톰캣, 제티, 언더토우 같은 웹 애플리케이션 서버(WAS	Web Application Server) 가 내장되어 있어서 
+							따로 설치를 하지 않아도 독립적으로 실행 가능
+
+	2) 빌드 구성을 단순화하는 스프링 부트 스타터를 제공
+
+	3) XML 설정을 하지 않고 자바 코드로 모두 작성 가능
+
+	4) JAR를 이용해서 자바 옵션만으로도 배포가 가능
+
+	5) 애플리케이션의 모니터링 및 관리 도구인 스프링 액츄에이터(Spring actuator)를 제공
+
+	스프링 부트는 스프링에 속한 도구
+
+	단, 스프링과 스프링 부트는 개발할 때의 몇가지 차이점이 있음
+
+** 스프링과 스프링 부트의 차이점
+
+	1) 구성의 차이
+
+	스프링	-	애플리케이션 개발에 필요한 환경을 수동으로 구성하고 정의해야 함
+	(수동)
+
+	스프링 부트  -	스프링 코어와 스프링 MVC의 모든 기능을 자동으로 로드하므로 
+	(자동)							수동으로 개발 환경을 구성할 필요가 없음
+	
+	
+	2) 내장 AWS의 유무
+
+	스프링 애플리케이션은 일반적으로 톰캣과 같은 WAS에서 배포 됨
+
+	스프링 부트는 WAS를 자체적으로 가지고 있음
+
+	그래서 JAR 파일만 만들면 별도로 WAS를 설정하지 않아도 애플리케이션을 실행할 수 있음
+
+	스프링 부트의 내장 WAS ==	톰캣, 제티, 언더토우
+	
+	상황에 필요한 WAS 를 선택 할 수 있음
+
+
+** 스프링과 스프링 부트 특징 비교
+
+				스프링						스프링 부트		
+
+목적				엔터프라이즈 애플리케이션 개발을 더 쉽게 만들기	스프링의 개발을 더 빠르고 쉽게 하기
+
+설정 파일				개발자가 수동으로 구성				자동 구성
+
+XML				일부 파일은 XML로 직접 생성하고 관리			사용하지 않음
+
+인메모리 데이터베이스 지원		지원하지 않음					인메모리 데이터베이스 자동 설정 지원
+
+서버				프로젝트를 띄우는 서버를 수동 설정			내장형 서버를 제공해 별도의 설정이 필요 없음
+				(예: 톰캣 , 제티) 	
+
+
+2.2 스프링 컨셉 공부하기
+
+
+** 제어의 역전과 의존성 주입
+
+	스프링은 모든 기능의 기반을 IoC (제어의 역전)와 DI (의존성 주입)에 두고 있음
+
+				<<IoC / DI 개념은 스프링의 핵심 개념>>
+
+** loC 란??
+
+	IoC (Inversion of Control) 
+	
+	자바 코드를 작성해 객체를 생성할 때는 객체가 필요한 곳에서 직접 생성했음
+
+	<클래스 A에서 클래스 B 객체를 생성하는 예>
+
+	public calss A {
+		b = new B();	클래스 A에서 new 키워드로 클래스 B의 객체 생성
+	}
+
+	IoC 는 다른 객체를 직접 생성하거나 제어하는 것이 아니라
+
+	외부에서 관리하는 객체를 가져와 사용하는 것
+
+	<제어의 역전 적용>
+	
+	<스프링 컨테이너가 객체를 관리하는 방식 예>
+
+	public class A {
+		private B b;	코드에서 객체를 생성하지 않음, 어디선가 받아온 객체를 b에 할당
+
+	}
+
+	클래스 B 객체를 직접 생성하는 것이 아니므로, 어딘가에서 받아와 사용하고 있다고 추측해볼 수 있음
+
+	실제로 스프링은 스프링 컨테이너가 객체를 관리, 제공하는 역할을 함
+
+	간단히 말하면, 스프링 컨테이너는 우리가 만든 객체들을 관리하고 
+	우리가 필요할 때 사용할 수 있도록 준비시켜주는 역할
+
+** DI 란??
+
+	스프링에서는 객체들을 관리하기 위해 IoC (제어의 역전)를 사용
+
+	IoC를 구현하기 위해 사용하는 방법	==	DI (Dependency Injection) 의존성 주입
+
+	DI	==	어떤 클래스가 다른 클래스에 의존한다는 뜻
+
+	<Ioc / DI 를 기초로 하는 스프링 코드>
+
+	<객체를 주입받는 모습 예>
+
+	public class A {
+		//A에서 B를 주입받음
+		@Autowired
+		B b;
+	}
+
+	@Autowired 어노테이션은 스프링 컨테이너에 있는 빈을 주입하는 역할
+
+** 빈이란?	
+
+	쉽게 말해 스프링 컨테이너에서 관리하는 객체
+	
+	어딘가에서 B b; 라고 선언 했을 뿐 직접 객체를 생성하지는 않고 있음
+
+	객체를 주입받고 있음
+
+	어디서?
+
+	스프링 컨테이너에서 객체를 주입
+
+	쉽게 생각하면 스프링 컨테이너가 객체 B 를 만들어서 클래스 A에 준 것
+	
+	스프링 컨테이너가 객체 B 를 생성	->	class A 
+
+	기존의 자바 코드에서는 class A 에서 B 객체를 쓰고 싶은 경우 직접 생성했지만
+
+	스프링의 경우 class A 에서 B 객체를 쓰고 싶은 경우 객체를 직접 생성하는 것이 아니라
+
+	스프링 부트에서 객체를 주입받아 사용함
+
+
+** 빈과 스프링 컨테이너
+
+** 스프링 컨테이너 란??
+
+	스프링은 스프링 컨테이너를 제공함.
+
+	스프링 컨테이너는 빈을 생성하고 관리함.
+
+	즉, 빈이 생성되고 소멸되기까지의 "생명주기"를 스프링 컨테이너가 관리하는 것
+
+	또한 개발자가 @Autowired 같은 어노테이션을 사용해 빈을 주입받을 수 있게 DI를 지원하기도 함
+
+** 빈이란??
+
+	빈은 스프링 컨테이너가 생성하고 관리하는 객체
+
+	앞에서 본 코드에서 B가 바로 빈.
+
+	스프링은 빈을 스프링 컨테이너에 등록하기 위해
+
+	XML 파일 설정, 어노테이션 추가 등의 방법을 제공함
+
+	빈을 등록하는 방법은 여러가지!!
+
+	      
+
+	EX) 	@Component	// 클래스 MyBean 빈으로 등록
+		public class MyBean {
+		}
+
+	MyBean 이라는 클래스에 @Component 어노테이션을 붙이면 MyBean 클래스가 빈으로 등록됨
+
+	이후 스프링 컨테이너에서 이 클래스를 관리함
+
+	이때 빈의 이름은 클래스 이름의 첫 글자를 소문자로 바꿔 관리함
+
+	MyBean 클래스의 빈 이름은 myBean
+
+	빈	==	스프링에서 제공해주는 객체
+
+
+** 관점 지향 프로그래밍
+
+	AOP	Aspect Oriented Programming	관점 지향 프로그래밍
+	(프로그래밍에서 관심사(concern)를 분리하는 기법 중 하나)
+	
+	애플리케이션의 주요 로직과 부가적인 기능을 분리하여 
+	코드를 더 깔끔하고 유지보수 하기 쉽게 만들어줌
+
+	프로그래밍에 대한 관심을 핵심 관점, 부가 관점으로 나누어서 관심 기준으로 모듈화 하는 것
+
+	EX)	계좌 이체, 고객 관리하는 프로그램이 있을 때 각 프로그램에는
+
+		로깅 로직, 즉, 지금까지 벌어진 일을 기록하기 위한 로직과
+
+		여러 데이터를 관리하기 위한 데이터베이스 연결 로직이 포함됨.
+
+		이때 핵심 관점은 계좌 이체, 고객 관리 로직이고,
+
+		부가 관점은 로깅, 데이터베이스 연결 로직임.
+
+		실제 프로그램의 기능으로 로직을 정리하면
+
+	
+
+	계좌 이체			고객 관리			<==	핵심 관점
+
+	로깅			로깅
+	데이터베이스 연결		데이터베이스 연결		<==	부가 관점
+
+	
+	로깅, 데이터베이스 연결은 모두 계좌 이체와 고객 관리가 필요함
+
+	여기에 AOP 관점을 적용하면 부가 관점에 해당하는 로직을 모듈화해서 
+
+	앞에서 본 그림처럼 개발할 수 있게 해줌.
+
+	다시말해, 부가 관점 코드를 핵심 관점 코드에서 분리할 수 있게 해줌
+
+	그 결과 프로그래머는 핵심 관점 코드에만 집중할 수 있게 될 뿐만 아니라
+
+	프로그램의 변경과 확장에도 유연하게 대응할 수 있어서 좋음
+
+** 이식 가능한 서비스 추상화
+
+	PSA	Portable Service Abstraction
+	
+	스프링에서 제공하는 다양한 기술들을 추상화해 개발자가 쉽게 사용하는 인터페이스
+
+	대표적인 PSA의 예 클라이언트의 매핑과 클래스, 메소드의 매핑을 위한 어노테이션
+	
+	스프링에서 데이터베이스에 접근하기 위한 기술
+	==	JPA, MyBatis, JDBC
+
+	어떤 기술을 사용하든 일관된 방식으로 데이터베이스에 접근하도록 인터페이스를 지원
+
+	WAS	==	PSA의 예시 중 하나
+
+	WHY?
+	
+	코드를 그대로 두고 WAS 를 톰캣이 아닌 언더로우, 네티와 같은 다른 곳에서 실행해도 
+	기존 코드를 그대로 사용 할 수 있기 때문
+
+	
+****	스프링의 컨셉 ==	IoC, DI, AOP, PSA
+	
+	IoC/DI 를 통해 객체간의 의존 관계를 설정,
+
+	AOP를 통해 핵심 관점과 부가 로직을 분리해 개발,
+
+	PSA를 통해 추상화된 다양한 서비스들을 일관된 방식으로 사용하도록 함.
+
+	IoC	객체의 생성과 관리를 개발자가 하는 것이 아니라 프레임워크가 대신하는 것
+
+	DI	외부에서 객체를 주입받아 사용하는 것
+
+	AOP	프로그래밍을 할 때 핵심 관점과 부가 관점을 나누어서 개발하는 것
+
+	PSA	어느 기술을 사용하던 일관된 방식으로 처리하도록 하는 것
+
+
+2.3 스트링 부트3 둘러보기
+
+	첫 번째 스프링 부트 3 만들기
+
+	01단계)
+
+	package me.hackerj.springbootdeveloper;
+
+	import org.springframework.web.bind.annotation.GetMapping;
+	import org.springframework.web.bind.annotation.RestController;
+
+	@RestController
+	public class TestController {
+    		@GetMapping("/test")
+    		public String test(){
+        			return "Hello World!!";
+    		}
+	}
+
+	사용자가 /test GET 요청 	=>	"Hello World" 문자열을 반환
+
+	클라이언트에서 보낸 /test 라는 GET 요청 확인하기
+
+	http://localhost:8080/test
+
+	localhost == 아이피로는 127.0.0.1
+
+	컴퓨터 네트워크에서 사용하는 "루프백 호스트명" == 현재 사용중인 컴퓨터를 의미
+
+	8080 == 스프링 부트의 포트번호
+
+	/test	==	@GetMapping 이라는 어노테이션으로
+			메소드와 매핑할 때 스프링 부트에서 설정한 경로
+
+
+** 스프링 부트 스타터 살펴보기
+
+	스프링 부트 스타터 == 의존성이 모여 있는 그룹
+
+	스타터를 사용하면 필요한 기능을 간편하게 설정할 수 있음
+
+	명명규칙
+
+	spring-boot-stater-{작업유형}
+
+	Ex) JDBC는 spring-boot-stater-jdbc 
+
+spring-boot-starter-web	
+	SpringMVC를 사용해서 RESTful 웹 서비스를 개발할 때 필요한 의존성 모음
+
+spring-boot-starter-test	
+	스프링 어플리케이션을 테스트하기 위해 필요한 의존성 모음
+
+spring-boot-starter-validation	
+	유효성 검사를 위해 필요한 의존성 모음
+
+spring-boot-starter-actuator		
+	모니터링을 위해 어플리케이션에서 제공하는 다양한 정보를 제공하기 쉽게 하는 의존성 모음
+
+spring-boot-stater-data-jpa
+	ORM을 사용하기 위한 인터페이스의 모음인 JPA를 더 쉽게 사용하기 위한 의존성 모음
+
+
+** 스프링 부트가 의존성을 가져오는 방법
+
+	스프링 부트는 현재 버전에 맞는 라이브러리를 알아서 관리함
+
+	만약 어떤 의존성을 사용하는지 버전별 확인이 필요하다면??
+
+	스프링 공식 문서 Dependency Version에서 확인 가능
+
+** 자동 구성
+
+	스프링 부트에서는 어플리케이션이 최소한의 설정만으로도 실행되게 여러 부분을 자동으로 구성
+
+    ** 내가 구성하지 않은 부분인데 스프링에서 자동으로 어떻게 구성했는지 확인할 상황이 오기 때문에 알아야함
+
+	스프링 부트는 서버를 시작할 때 구성 파일을 읽어와서 설정함
+		( 자 동 설 정 )
+
+	자동 설정은 META-INF에 있는 spring-factories 파일에 담겨있음
+
+	spring-factories 에 들어가면
+
+	프로젝트에 쓰일 구성 후보들이 나옴
+
+	스프링 부트를 시작할 때 이 파일에 설정되어 있는 클래스를 모두 불러옴.
+
+	이후에는 프로젝트에서 사용할 것 들만 자동으로 구성해 등록하는 것
+
+	자동 구성되는 클래스는 AutoConfiguration 속성값을 정의해놓은 클래스는
+							Properties를 이름 끝에 붙임.
+
+	스프링 부트에서는 빈이 자동으로 등록되고 구성됨
+
+	만약 자동 구성이 없다면 개발자가 특정 기술을 사용할 때마다 설정해야 하는 값을
+	모두 개발자가 직접 설정해줘야 함.
+
+** 스프링 부트3와 자바 버전
+
+	스프링 부트3 이전과 이후에 사용할 수 있는 자바 버전 범위가 다름.
+
+	스프링 부트2는 자바 8 버전 이상을 사용
+	스프링 부트3는 자바 17 버전 이상을 사용해야 함
+
+	자바 17의 주요 변화	==	텍스트 블록, 레코드, 패턴 매칭
+
+** 텍스트 블록
+
+	이전에는 여러 줄의 텍스트를 작성하려면 \n 을 추가해야 했음
+
+	이제는 """로 감싼 텍스트를 사용해 여러 줄의 텍스트를 표현할 수 있음
+
+*** """ 로 여러 줄의 텍스트 표현 예
+
+	String query11 = "SELECT * FROM \ "items\ "\n" +
+			"WHERE \ "status\" = \ "ON_SALE\ "\n" +
+			"ORDER BY \ "price \";\n";
+
+	String query17 = """
+			SELECT * FROM "items"
+			WHERE "status" = "ON_SALE"
+			ORDER BY "price";
+			""";
+
+	** 텍스트 블록의 주요 특징
+
+	1) 여러 줄에 걸친 문자열을 간결하게 작성할 수 있음
+	2) 이스케이프 문자를 사용하지 않고도 따옴표를 문자열에 포함시킬 수 있음
+	3) 문자열 내의 공백은 그대로 유지됨
+
+	** 텍스트 블록을 사용할 때 주의할 점
+
+	1) 줄 바꿈 처리: 텍스트 블록 안에서의 줄 바꿈은 그대로 유지됨
+
+	String textBlock = """
+                   This is a
+                   multiline
+                   text block.
+                   """;
+
+	2) 이스케이프 시퀀스: 이스케이프 시퀀스(예: \n ,\t)는 문자열에서 동일하게 작동
+		그러나 이스케이프 시퀀스를 사용하지 않고도 텍스트 블록에서 줄 바꿈과 포맷을 적용할 수 있음
+
+	** 이스케이프 시퀀스를 사용하여 쌍 따옴표를 포함할 수 있음
+
+	String textBlock = """
+                   This is an escaped \"quote\" inside a text block.
+                   """;
+
+	
+	3) 중첩된 쌍 따옴표 : 텍스트 블록 내에서 쌍 따옴표를 사용할 수 있음
+		
+	** 텍스트 블록 내에서 쌍 따옴표를 사용할 수 있음	
+
+	String textBlock = """
+                   This is a "nested" quote inside a text block.
+                   """;
+
+	4) 문자열 보간: 텍스트 블록 안에서 변수 값을 삽입하려면 문자열 보간을 사용
+		${변수명} 구문을 사용할 수 있음
+
+	String name = "John";
+	String textBlock = """
+                   Hello, ${name}!
+                   Welcome to our website.
+                   """;
+
+	
+** formatted() 메소드
+	( formatted() 와 String.format() ) 은 문자열을 형식화 하는데 사용되는 메소드
+
+	값을 파싱하기 위한 formatted() 메소드 제공
+
+	** 파싱을 위한 formatted() 메소드 예
+
+	String textBox17 = """
+	{
+		"id" : %d,
+		"name" : %s
+	}
+	""".formatted(2, "juice");
+
+	%s는 문자열을, 
+	%d는 정수를 대체할 형식 지정자
+
+	** 숫자를 통화 형식으로 형식화하는 경우
+
+	double price = 1234.56;
+	String formattedPrice = String.format("가격: $%,.2f", price);
+	System.out.println(formattedPrice);
+
+	** 텍스트 블록과 formatted() 사용시
+
+	double price = 1234.56;
+		String formattedPrice = """
+                      	가격: $%,.2f
+                      	""".formatted(price);
+	System.out.println(formattedPrice);
+
+	출력 값 : 가격: $1,234.56
+
+	** 날짜를 특정한 형식으로 형식화 하는 경우
+
+	import java.time.LocalDate;
+
+	LocalDate date = LocalDate.now();
+	String formattedDate = String.format("오늘은 %tY년 %<tm월 %<td일", date);
+	System.out.println(formattedDate);
+
+	** 텍스트 블록과 formatted() 사용시
+
+	import java.time.LocalDate;
+
+	LocalDate date = LocalDate.now();
+	String formattedDate = """
+                      오늘은 %tY년 %<tm월 %<td일
+                      """.formatted(date);
+	System.out.println(formattedDate);		
+	
+	%tY, %tm, %td는 각각 연도, 월, 일을 나타내는 형식 지정자 
+	%<는 이전에 사용한 인수를 재사용하는 것을 의미
+
+** 레코드
+
+	레코드는 데이터 전달을 목적으로 하는 객체를 더 빠르고 간편하게 만들기 위한 기능
+
+	** 레코드는 상속을 할 수 없음
+
+	** 파라미터에 정의한 필드는 private final로 정의 됨
+
+	** 게터 getter를 자동으로 만들기 때문에 어노테이션이나 메소드로 게터 정의를 하지 않아도 됨
+
+	** 레코드 사용 예
+
+		record Item(String name, int price) {
+			// 이렇게 하면 파라미터가 private final로 정의됨
+		}
+		Item juice = new Item("juice", 3000);
+		juice.price();	// 3000
+
+** 패턴 매칭
+
+	타입 확인을 위해 사용하던 instanceof 키워드를 조금 더 쉽게 사용할 수 있게 해줌
+	
+	이전에는 instanceof 키워드와 형변환 코드를 조합해야 했지만
+	이제는 바로 형변환을 한 다음 사용할 수 있음
+
+	// 11 버전
+
+	if (o instanceof Integer) {
+		Integer i = (Integer)o;
+	...
+	}
+	
+	// 17 버전
+	
+	if (o instanceof Integer i){
+	...
+	}
+
+** 자료형에 맞는 case 처리
+
+	switch-case 문으로 자료형에 맞게 case 처리를 할 수 있음
+
+	** 자료형 case 처리 예
+	
+	static double getInegerValue(Object o) {
+		return switch (o) {
+			case Double d -> d.intValue();
+			case Float f -> f.intValue();
+			case String s -> Integer.parseInt(s);
+			default -> 0d;
+		};
+	}
+
+** Servlet, JPA의 네임 스페이스가 Jakarta로 대체
+
+	패키지 네임스페이스가 javax.* 에서 jakarta.*로 변경되었음
+	
+	만약 스프링 부트2 버전을 사용하고 있다면 패키지의 이름을 javax 에서 jakarta를 사용하게 변경해야 함
+
+** GrealVM 기반의 스프링 네이티브 공식 지원
+
+	스프링 부트 3.0 부터는 GrealVM 네이티브 이미지를 공식 지원함
+	기존에 사용하던 자바 가상머신에 비해 훨씬 빠르게 시작됨
+	더 적은 메모리 공간을 차지함
+	
+	JVM 실행 파일과 비교해 네이티브 이미지를 사용하면 
+	가동시간이 짧아지고 메모리를 더 적게 소모함
+	
+
+2.4 스프링 부트 3 코드 이해하기
+
+	1단계)	@SpringBootApplication 이해하기
+	
+package me.hackerj.springbootdeveloper;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SpringBootDeveloperApplication {
+        public static void main(String[] args) {
+            SpringApplication.run(SpringBootDeveloperApplication.class, args);
+        }
+    }
+
+	이 클래스는 자바의 main() 메소드와 같은 역할
+
+	여기서 스프링 부트가 시작됨
+	
+	@SpringBootApplication 어노테이션을 추가하면 스프링 부트 사용에 필요한 기본 설정을 해줌
+
+	SpringBootApplication.run() 메소드는 어플리케이션을 실행함
+
+	첫 번째 인수는 스프링 부트 3 어플리케이션의 메인 클래스로 사용할 클래스,
+	두 번째 인수는 커맨드 라인의 인수들을 전달함
+
+	
+	2단계) @SpringBootApplication의 의미를 파악해보기
+
+	
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@SpringBootConfiguration		// 스프링 부트 관련 설정
+@EnableAutoConfiguration
+@ComponentScan(
+    excludeFilters = {@Filter( type = FilterType.CUSTOM,
+    // 사용자가 등록한 빈을 읽고 등록
+    classes = {TypeExcludeFilter.class}
+), @Filter( type = FilterType.CUSTOM,
+    classes = {AutoConfigurationExcludeFilter.class}
+)}
+)
+public @interface SpringBootApplication {
+    @AliasFor(
+        annotation = EnableAutoConfiguration.class	// 자동으로 등록된 빈을 읽고 등록
+    )
+
+** @SpringBootConfiguration
+
+	스프링 부트 관련 설정을 나타내는 어노테이션
+
+	@Configuration을 상속해서 만든 어노테이션
+	
+	이 어노테이션은 개발자가 직접 사용하는 어노테이션은 아님
+
+** @ComponentScan
+
+	사용자가 등록한 빈을 읽고 등록하는 어노테이션
+	
+	@Component 라는 어노테이션을 가진 클래스들을 찾아 빈으로 등록하는 역할
+
+	 모든 빈에 @Component 만 사용하는게 아님
+	@Component를 감싸는 어노테이션이 있는데 실제 개발을 하면
+	@Component 어노테이션보다는 용도에 따라 다른 어노테이션을 사용
+
+어노테이션 명			설명
+
+@Configuration			설정 파일 등록
+@Repository			ORM 매핑
+@Controller, @RestController	라우터
+@Service				비즈니스 로직
+
+	
+** @EnableAutoConfiguration
+
+	스프링 부트에서 자동구성을 활성화하는 어노테이션
+
+	스프링 부트가 실행될 때 스프링 부트의 메타 파일을 읽고 
+	정의된 설정들을 자동으로 구성하는 역할을 수행함
+
+	"자동 구성" 에서 살펴본 spring.factories 파일의 클래스들이
+	@EnableAutoConfiguration을 사용할 때 모두 자동 설정됨
+
+
+** 테스트 컨트롤러 살펴보기
+
+	스프링 컨테이너	==	빈을 관리
+
+	빈이 어떻게 등록되는지 알아보기
+	
+@RestController
+public class TestController {
+    @GetMapping("/test")
+    public String test(){           // /test GET 요청이 오면 test() 메소드 실행
+        return "Hello World!!";
+    }
+}
+
+	@RestController 는 라우터 역할을 하는 어노테이션
+	
+	** 라우터란??
+		HTTP 요청과 메소드를 연결하는 장치
+	
+	@RestController 어노테이션이 있어야 클라이언트의 요청에 맞는 메소드를 실행 할 수 있음
+
+	TestController를 라우터로 지정해 /test 라는 GET 요청이 왔을 때
+
+	test() 메소드를 실행하도록 구성 한 것
+
+** @RestController 와 Component는 어노테이션 용어가 다름
+	어떻게 같은 @Component 처럼 취급하는 걸까?
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Controller
+@ResponseBody
+public @interface RestController {
+    @AliasFor(
+        annotation = Controller.class
+    )
+    String value() default "";
+
+	코드를 보면 @Controller, @ResponceBody 어노테이션이 함께 있음
+	즉, @Controller 어노테이션에 @ResponceBody 어노테이션이 합쳐진 결과물이
+	@RestController 어노테이션
+
+	@Controller + @ResponceBody = @RestController
+
+	@Controller 어노테이션 구현 파일인 @Controller 파일로 이동해보면
+
+
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Component
+public @interface Controller {
+    @AliasFor(
+        annotation = Component.class
+    )
+    String value() default "";
+}
+
+	@Component 어노테이션이 있는걸 확인할 수 있음
+	
+	@Controller 어노테이션에서 @Component 어노테이션을 가지고 있기 때문에
+	@Controller 어노테이션이 @ComponentScan을 통해 빈으로 등록됨
+
+** @Configuration, @Repository, @Service 어노테이션도 모두 @Component 어노테이션을 가지고 있음
+	
+	다만, 빈이 무슨 역할을 하는지 명확하게 구분하기 위해 다른 이름으로 덮어두었을 뿐.
+
+
+**** 핵심 요약
+
+	1) 스프링은 엔터프라지으 어플리케이션을 쉽게 개발할 수 있도록 도와주는 프레임워크
+
+	2) IoC는 제어의 역전, DI는 의존성 주입을 뜻함
+
+	3) 스프링 부트는 스프링을 더 빠르고 쉽게 사용하기 위한 도구로서 스타터와 자동 구성을 제공함
+
+	4) 어노테이션은 자바 소스 코드에 추가하는 표식임
+		보통 @ 기호를 앞에 붙여서 사용,
+		JDK 1.5 버전부터 사용할 수 있음
+		어노테이션은 다양한 목적으로 사용하지만.
+		메타 데이터의 비중이 가장 큼
+
+	** 메타 데이터(데이터에 대한 설명을 담고 있는 데이터)
+	
+	5)SpringBootApplication은 스프링 부트 관련된 설정을 하는 @SpringBootConfiguration,
+	   사용자가 등록한 빈을 읽고 등록하는 @ComponentScan,
+	   자동 설정으로 등록괴는 빈을 읽고 등록하는 @EnableAutoConfiguration으로 이루어져 있음
+
+	6) @Component 어노테이션이 있는 클래스는 빈으로 등록되며,
+	
+	@Controller,
+	@RestController,
+	@Configuration,
+	@Repository,
+	@Service
+	
+	모두 @Component 어노테이션을 가지고 있음
+	

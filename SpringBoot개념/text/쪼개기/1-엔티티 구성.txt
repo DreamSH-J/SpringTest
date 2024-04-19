@@ -1,0 +1,74 @@
+1) 엔티티 구성하기
+
+@Entity
+public class Article {
+
+	@ID
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false)
+	private Long id;
+
+	@Column(name = "title", nullable = false)
+	private String title;
+
+	@Column(name = "content", nullable = false)
+	private String content;
+
+	@Builder
+	public Article(String title, String content) {
+		this.title = title;
+		this.content = content
+	}
+
+	protected Article() {
+
+	}
+	
+	public Long getId() {
+
+	}
+
+	public String getTitle() {
+
+	}
+
+	public String getContent() {
+
+	}
+}
+
+2) 같은 코드지만 롬복을 사용했을 경우
+
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Article {
+
+	@ID
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", updatable = false)
+	private Long id
+
+	@Column(name = "title", nullable = false)
+	private String title
+
+	@Column(name = "content", nullable = false)
+	private String content
+
+	@Builder
+	public Articke(String title, String content) {
+		this.title = title;
+		this.content = content;
+	}
+}
+
+**
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+
+접근 제어자가 protected인 기본 생성자를 별도의 코드 없이 생성함.
+
+**
+@Getter
+
+@Getter 어노테이션으로 클래스 필드에 대해 별도 코드없이 
+모든 필드에 대한 접근자 메소드를 만듦

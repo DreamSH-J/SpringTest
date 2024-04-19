@@ -1,0 +1,56 @@
+5) 컨트롤러 메소드 작성
+** URL에 매핑을 하기 위한 컨트롤러 메소드를 추가
+
+	컨트롤러 메소드에는 URL 매핑 어노테이션 
+	@GetMapping, @PostMapping, @PutMapping, @DeleteMapping 등 사용 가능
+	
+	각 메소드는 HTTP를 대응함.
+	
+	여기에서는 /api/articles에 POST 요청이 오면 @PostMapping을 이용해 요청을 매핑 한 뒤,
+	블로그 글을 생성하는 BlogService의 save() 메소드를 호출한 뒤,
+	생성된 블로그 글을 반환하는 작업을 하는 addArticle() 메소드를 작성
+
+	<순서 기억>
+
+	controller 패키지 생성 -> BlogApiController.java 파일
+
+@RequiredArgsConstructor
+@RestController
+public class BlogApiController {
+	
+	private final BlogService blogService;
+
+	@PostMapping("/api/articles")
+	public ResponseEntity<Article> addArticle(@RequstBody AddArticleRequest request) {
+		Article savedArticle = blogService.save(request);
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(savedArticle);
+	}
+}
+
+** @RestController 어노테이션을 클래스에 붙이면 HTTP 응답으로 객체 데이터를 JSON 형식으로 반환
+
+** @PostMapping() 어노테이션은 HTTP 메소드가 POST일 때 요청 받은 URL과 동일한 메소드와 매핑함.
+
+** 여기서는 /api/articles는 addArticle() 메소드에 매핑함
+
+** @RequestBody 어노테이션은 HTTP를 요청할 때, 응답에 해당하는 값을
+	@RequestBody 어노테이션이 붙은 댕상 객체인 AddArticleRequest에 매핑함
+
+** ResponseEntity.status().body()는 응답 코드로 201,
+				즉, Created를 응답하고 테이블에 저장된 객체를 반환함
+
+*****
+
+200 OK : 요청이 성공적으로 수행되었음
+
+201 Created : 요청이 성공적으로 수행되었고, 새로운 리소스가 생성되었음
+
+400 Bad Request : 요청 값이 잘못되어 요청에 실패했음
+
+403 Forbidden : 권한이 없어 요청에 실패했음
+
+404 Not Found : 요청 값으로 찾은 리소스가 없어 요청에 실패했음
+
+500 Internal Server Error : 서버 상에 문제가 있어 요청에 실패했음
+

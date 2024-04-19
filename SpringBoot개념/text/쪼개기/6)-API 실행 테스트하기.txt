@@ -1,0 +1,25 @@
+6) API 실행 테스트하기
+
+실제 데이터를 확인하기 위해 H2 콘솔을 활성화 해야함
+
+H2 콘솔을 비활성화 되어 있음 (활성화를 하려면 속성 파일을 수정해줘야 함)
+
+resources		->	application.yml
+
+spring:
+  jpa:
+    # 전송 쿼리 확인
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+    # 테이블 생성 후에 data.sql 실행
+    defer-datasource-initialization: true
+  datasource:
+    url: jdbc:h2:mem:testdb
+
+  h2:
+    console:
+      enabled: true
+

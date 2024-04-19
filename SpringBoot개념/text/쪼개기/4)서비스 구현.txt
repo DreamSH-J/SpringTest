@@ -1,0 +1,40 @@
+4)서비스 구현
+
+service 패키지 생성 후 service 패키지에서 BlogService 클래스를 구현
+
+@RequiredArgsConstructor
+@Service
+public class BlogService {
+
+	private final BlogRepository blogRepository;
+
+	public Article save(AddArticleRequest request) {
+		return blogRepository.save(requst.toEntity());
+	}
+}
+
+
+** @RequiredArgsConstructor 는 빈을 생성자로 생성하는 롬복에서 지원하는 어노테이션
+	final 키워드나 @NotNull이 붙은 필드로 생성자를 만들어줌
+
+** @Service 어노테이션은 해당 클래스를 빈으로 서블릿 컨테이너에 등록해줌
+
+** save() 메소드는 JpaRepository에서 지원하는 저장 메소드
+	AddArticleRequset 클래스에 저장된 값들을 article 데이터베이스에 저장
+
+
+** private final BlogRepository blogRepository;
+
+** BlogRepository의 구성 살펴보기
+
+	CrudRepository	------------	save()
+
+	JpaRepository
+
+	BlogRepository
+
+BlogRepository는 JpaRepository를 상속 받음
+JpaRepository의 부모 클래스 == CrudRepository에 save() 메소드가 선언되어 있음
+
+save() 메소드를 사용하면 Article 엔티티를 저장할 수 있는 이유.
+

@@ -1,0 +1,121 @@
+4.1 테스트 코드 개념 익히기
+
+** 테스트 코드
+	작성한 코드가 의도대로 잘 동작하고 예상치 못한 문제가 있는지 확인할 목적
+
+** 테스트 코드란?
+	테스트 코드는 test 디렉토리에서 작업
+	
+** 테스트 코드에도 다양한 패턴이 있음
+
+	1) given - when - then 패턴
+		given	테스트 실행을 준비하는 단계
+		when	테스트를 진행하는 단계
+		then	테스트 결과를 검증하는 단계
+
+
+given - when - then 패턴의 테스트 코드 예
+
+@DisplayName("새로운 메뉴를 저장")
+@Test
+public void saveMenuTest() {
+
+	// 1) given : 메뉴를 저장하기 위한 준비 과정
+	final String name = "아메리카노";
+	final int price = 2000;
+
+	final Menu americano = new Menu(name, price);
+
+	// 2) when : 실제로 메뉴를 저장
+	final long savedId = menuService.save(americano);
+
+	// 3) then : 메뉴가 잘 추가되었는지 검증
+	final Menu savedMenu = menuService.findById(savedId).get();
+	assertThat(savedMenu.getName()).isEqualTo(name);
+	assertThat(savedMenu.getPrice()).isEqualTo(price);
+}
+
+
+4.2 스프링 부트 3와 테스트
+
+스프링 부트는 애플리케이션을 테스트하기 위;한 도구와 어노테이션을 제공
+
+spring-boot-starter-test 스타터에 테스트를 위한 도구가 모여있음
+
+
+** 스프링 부트 스타터 테스트 목록
+
+1) JUnit
+	자바 프로그래밍 언어용 단위 테스트 프레임워크
+
+2) Spring Test & Spring Boot Test
+	스프링 부트 어플리케이션을 위한 통합 테스트 지원	
+
+3) AssertJ
+	검증문인 어설션을 작성하는 데 사용되는 라이브러리
+
+4) Hamcrest
+	표현식울 이해하기 쉽게 만드는 데 사용되는 Matcher 라이브러리
+
+5) Mockito
+	테스트에 사용할 가짜 객체인 목 객체를 쉽게 만들고, 관리하고, 검즐할 수 있게 지원하는 테스트 프레임워크
+
+6) JSONassert
+	JSON용 어설션 라이브러리
+	
+7) JsonPath
+	JSON 데이터에서 특정 데이터를 선택하고 검색하기 위한 라이브러리
+
+	이 중에서 JUnit과 AssertJ를 가장 많이 사용함
+
+** JUnit 이란?
+
+	JUnit은 자바 언어를 위한 단위 테스트 프레임워크
+
+** 단위 테스트란?
+
+	작성한 코드가 의도대로 작동하는지 작은 단위로 검증하는 것
+	
+	단위는 보통 메소드
+
+	JUnit을 사용하면 단위 테스트를 작성하고 테스트하는데 도움의 줌
+
+	사용법이 간단함
+
+** JUnit의 특징
+
+	테스트 방식을 구분할 수 있는 어노테이션 제공
+	
+	@Test 어노테이션으로 메소드를 호출할 때마다 새 인스턴스를 생성, 독립 테스트 가능
+
+	예상 결과를 검즐하는 어설션 메소드 제공
+
+	사용 방법이 단순, 테스트 코드 작성 시간이 적음
+
+	자동 실행, 자체 결과를 확인하고 즉각저긴 피드백 제공
+
+
+** JUnit으로 단위 테스트 코드 만들기
+
+
+public class JUnitTest {
+	@DisplayName("1 + 2는 3이다")	// 테스트 이름
+	@Test
+	public void junitTest() {
+		int a = 1;
+		int b = 2;
+		int sum = 3;
+	Assertions.assertEquals(sum, a+b);	// 값이 같은지 확인
+	}
+}
+
+** @DisplayName 어노테이션은 테스트 이름을 명시
+
+** @Test 어노테이션을 붙인 메소드는 테스트를 수행하는 메소드가됨
+
+** JUnit은 테스트끼리 영향을 주지 않도록 각 테스트를 실행할 때 마다 
+	테스트를 위한 실행 객체를 만들고 테스트가 종료되면 실행 객체를 삭제함
+
+** JUnit 에서 제공하는 assertEquals() 메소드로 a + b 와 sum의 값이 같은지 확인함
+	
+예시) Assertions.assertEquals( 기대하는 값, 실제로 검증할 값 )

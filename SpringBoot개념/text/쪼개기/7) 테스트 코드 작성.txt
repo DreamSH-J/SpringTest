@@ -1,0 +1,27 @@
+7) 반복 작업을 줄여줄 테스트 코드 작성하기
+
+1)) BlogApiController 클래스에 alt+enter [Creat Test]
+
+@SpringBootTest
+@AutoConfigueMockMvc
+class BlogApiControllerTest {
+
+	@Autowired
+	protected MockMvc mockMvc;
+
+	@Autowired
+	protected ObjectMapper objectMapper;
+
+	@Autowired
+	protected WebApplicationContext context;
+
+	@Autowired
+	BlogRepository blogRepository;
+
+	@BeforeEach
+	public void mockMvcSetup() {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
+				.build();
+		blogRepository.deleteAll();
+	}
+}

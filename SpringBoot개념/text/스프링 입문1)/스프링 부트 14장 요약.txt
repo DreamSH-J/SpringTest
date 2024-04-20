@@ -1,0 +1,100 @@
+14장 댓글 엔티티와 리포지토리 만들기
+
+1. 일대 다 관계, 다대 일 관계
+
+한 엔티티의 하나의 데이터가 다른 엔티티의 여러 데이터와 연관될 때 이를 일대 다 관계.
+
+반대로 한 엔티티의 여러 데이터가 다른 엔티티의 한 데이터와 연관될 때는 다대일 관계.
+
+2. 대표 키와 외래키
+
+엔티티에서 자신을 대표하는 값을 대표키(PK Primaty Key) 
+
+다른 엔티티를 참조할 수 있도록 다른 엔티티의 대표키를 가리키는 값을 외래키(FK Foreign Key)
+
+3. 다대일 관계 설정
+
+두 엔티티를 다대일 관계로 설정하려면 대표키와 외래키를 연결해야 함.
+
+자식 엔티티에 외래키를 만들어 부모 엔티티의 대표키 값을 갖게 함.
+
+4. @ManyToOne
+
+두 엔티티를 다대일 관계로 설정하는 어노테이션
+
+5. @JoinColumn
+
+해당 엔티티에 외래키를 생성하는 어노테이션. (name 속성으로 매핑할 외래키 이름을 지정 할 수 있음)
+
+형식) @JoinColumn(name="외래키_이름")
+
+6. JpaRepository
+
+ListCrudRepository와 ListPagingAndSortingRepository를 상속 받은 인터페이스
+CRUD(생성 , 조회, 수정, 삭제) 기능 뿐만 아니라 
+엔티티를 페이지 단위로 조회 및 정렬하는 기능, JPA에 특화된 여러 기능 제공
+
+7. 네이티브 쿼리 메소드
+
+리포지토리의 메소드로 쿼리를 작성해 실행하는 것
+
+네이티브 쿼리 메소드는 @Query 어노테이션이나 orm, xml 파일을 이용해 만들 수 있음
+
+8. @Query
+
+SQL과 유사한 JPQL(Java Persistence Query Language) 이라는 객체 지향 쿼리 언어를 통해
+
+쿼리를 처리 할 수 있도록 지원하는 어노테이션
+
+기존의 SQL 문을 그대로 쿼리 언어로 사용하고 싶다면 nativeQuery 속성을 true로 설정
+
+형식) @Query(value= "쿼리" , nativeQuery = true)
+
+9. 네이티브 쿼리 XML
+
+메소드에서 수행할 쿼리를 XML로 작성한 것
+
+네이티브 쿼리 XML의 기본 경로와 파일 이름은 META-INF > orm.xml
+
+이 경로와 이름으로 파일을 만들면 XML 이 자동으로 인식
+
+10. orm.xml 코드 작성 방법
+
+orm.xml 파일이 생성되면 먼저 엔티티 매핑을 위한 XML 기본 코드를 작성 한 후
+
+<entity-mappings> 태그 안에 <named-native-query>와 <query> 태그를 이용해 쿼리를 입력
+
+형식) 
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="https://jakarta.ee/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence/orm
+                 https://jakarta.ee/xml/ns/persistence/orm/orm_3_.xsd"
+                 version="3.0">
+    <named-native-query
+            name="Comment.findByNickName"
+            result-class="com.example.firstproject.entity.Comment">
+        <query>
+            <![CDATA[
+                SELECT * FROM comment WHERE nickname = :nickname
+            ]]>
+        </query>
+    </named-native-query>
+</entity-mappings>
+
+11. @DataJpaTest
+
+JPA와 연동한 테스트를 진행하는 어노테이션
+
+이를 통해 리포지토리와 엔티티 등의 객체를 테스트 코드에서 사용 할 수 있음
+
+12. @DisplayName
+
+테스트 이름을 붙일 때 사용
+
+기본적으로 테스트 이름은 메소드 이름을 따라감
+
+메소드 이름은 그대로 둔 채 테스트 이름을 바꾸고 싶을 때 이 어노테이션을 사용
+
+형식) @DisplayName("테스트_결과에_보여_줄_이름")

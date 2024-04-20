@@ -1,0 +1,62 @@
+17장 요약
+
+
+1. 댓글 등록하기
+
+1) 댓글 생성 뷰 페이지(_new)에 댓글 입력 폼 만들기
+
+2) [댓글 작성] 버튼을 클릭해 REST API 요청 보내기
+
+
+2. 버튼 변수화
+
+버튼 같은 문서 내 특정 요소를 변수로 받아 오려면?
+	querySelector() 메소드를 사용해 해당 요소를 선택한 후 변수에 저장
+
+	자료형 변수명 = document.querySelector("id_값");
+
+
+3. 버튼 이벤트 감지
+
+클릭, 마우스 오버 같이 웹 페이지에서 발생한 특정 이벤트는 addEventListener() 메소드를 사용
+
+// 이벤트가 감지되면 이벤트처리 함수를 실행
+
+	요소명.addEventListener("이벤트_타입", 이벤트_처리_함수)
+
+
+4. 댓글 객체 생성
+
+댓글 객체를 자바스크립트로 만드는 방법 ( 3가지 )
+
+1) 객체 리터럴 방식
+	
+	let object = {
+		key1: value,
+		key2: value
+		...
+	}
+
+2) 생성자 함수 방식
+	찾아보기
+3) Object.create() 방식
+	찾아보기
+
+
+5. REST API 호출과 응답 처리
+
+자바스크립트로 REST API 요청을 보낼 때 fetch() 함수를 사용
+
+POST 요청을 보낼 때 형식
+
+(전송 데이터가 자바스크립트 객체이므로 JSON 문자열로 변환해 보냄)
+
+	fetch( 'API_주소', {
+		method: 'POST',				// 요청 메소드(GET, POST, PATCH, DELETE)
+		headers: {				// 헤더 정보
+			"Coment-Type": "application/json"
+		},
+		body: JSON.stringify(객체)			// 전송 데이터
+	}).then(response => {				// 응답을 받아 처리하는 구문
+		응답_처리문;
+	})	;

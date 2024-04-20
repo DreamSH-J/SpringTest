@@ -1,0 +1,47 @@
+16장 요약
+
+1. 댓글의 레이아웃
+
+댓글은 크게 두 영역으로 나뉨
+
+1) 기존 댓글을 보여주는 영역 (_list)
+
+2) 새 댓글을 입력하는 영역 (_new)
+
+**
+
+댓글 뷰 (_comments)
+
+댓글 목록 뷰 (_list)
+
+댓글 생성 뷰 (_new)
+
+상세 페이지 뷰 (show)
+
+
+
+2. 댓글 뷰 파일의 구성
+
+댓글 뷰 파일은 댓글 영역을 보여 주는 뷰 파일(_comments.mustache),
+
+댓글 목록을 보여주는 뷰 파일(_list.mustache),
+
+새 댓글을 작성하는 뷰 파일(_new.mustache)
+
+로 나누어 작성
+
+** 댓글 뷰 파일의 디렉토리 구조
+
+comments (directory)
+	(_comments.mustache)
+	(_list.mustache)
+	(_new.mustache)
+
+
+3. {{#commentDtos}} {{/commentDtos}}
+
+뷰 페이지에서 모델에 등록된 데이터의 사용 범위를 지정할 때 사용하는 머스테치 문법
+
+{{#commentDtos}} 부터 {{/commentDtos}} 까지 범위 내에서 commentDtos 데이터를 사용 가능
+
+commentDtos 데이터의 수 만큼 해당 범위를 반복함. **

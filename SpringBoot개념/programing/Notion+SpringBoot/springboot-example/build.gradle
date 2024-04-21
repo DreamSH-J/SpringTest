@@ -1,0 +1,41 @@
+plugins {   //1)
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+//2)
+group = 'me.jangsen'
+version = '1.0'
+sourceCompatibility = '17'
+
+repositories {  //3)
+    mavenCentral()
+}
+
+dependencies {  //4)
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // 스프링 데이터 JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2' // 인메모리 데이터베이스
+    compileOnly 'org.projectlombok:lombok' // 롬복
+    annotationProcessor 'org.projectlombok:lombok'
+}
+test {
+    useJUnitPlatform()
+}
+    /*
+        1) plugins  ==  프로젝트에 사용할 플러그인
+                        스프링 부트 플러그인 'org.springframework.boot' 와
+                        의존성을 자동으로 관리하는 'io.spring.dependency-management' 을 추가
+
+        2) group 에는 프로젝트를 설정할 때의 기본값인 그룹 이름과 버전 입력
+
+        3) repositories == 의존성을 받을 저장소를 지정
+
+        4) dependencies ==  프로젝트를 개발하며 필요한 기능의 의존성을 입력
+            spring-boot-starter-web ==  웹 관련 기능
+            spring-boot-starter-test ==  테스트 기능 제공
+
+
+    */

@@ -23,7 +23,7 @@ public class BlogService {
         return blogRepository.findAll();
     }
     /*
-        findById()메소드를 사용하여 ID 를 받아 엔티티[를 조회하고 없으면 IllegalArgumentException 예외를 발생
+        findById()메소드를 사용하여 ID 를 받아 엔티티를 조회하고 없으면 IllegalArgumentException 예외를 발생
     */
     public Article findById(Long id) {
         return blogRepository.findById(id)

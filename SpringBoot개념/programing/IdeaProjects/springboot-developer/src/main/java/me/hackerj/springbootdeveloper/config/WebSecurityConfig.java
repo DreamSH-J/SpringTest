@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
+/* ************************************시큐리티 환경설정********************************************* */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -66,7 +66,7 @@ public class WebSecurityConfig {
     // 9) 패스워드 인코더로 사용할 빈 등록
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();     // 생성자를 만들면 알아서 암호화해줌
     }
 }
 /*
@@ -110,7 +110,4 @@ public class WebSecurityConfig {
     passwordEncoder() : 비밀번호를 암호화하기 위한 인코더를 설정
 
     9) 패스워드 인코더를 빈으로 등록함
-
-
-
 */

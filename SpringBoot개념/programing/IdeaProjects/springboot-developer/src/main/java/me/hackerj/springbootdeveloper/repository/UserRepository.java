@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
-    //1) email로 사용자 정보를 가져옴
+    // 1) email로 사용자의 정보를 가져옴
 }
 /*
     이메일로 사용자 정보를 식별 할 수 있음

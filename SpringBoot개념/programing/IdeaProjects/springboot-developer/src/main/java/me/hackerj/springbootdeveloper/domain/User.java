@@ -1,6 +1,7 @@
 package me.hackerj.springbootdeveloper.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,9 @@ import java.util.List;
 //import static jdk.internal.org.jline.reader.impl.LineReaderImpl.CompletionType.List;
 
 @Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-
+@Entity
 public class User implements UserDetails {
 //    UserDetails를 상속박아 인증 객체로 사용
     @Id
@@ -120,6 +121,4 @@ public class User implements UserDetails {
 
     스프링 시큐리티에서 해당 객체를 통해 인증 정보를 가져오려면 필수 오버라이드 메소드들을
     여러 개 사용해야 함
-
 */
-

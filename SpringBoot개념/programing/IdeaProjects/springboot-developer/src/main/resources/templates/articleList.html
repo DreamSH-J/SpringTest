@@ -13,31 +13,27 @@
 
 <div class="container">
     <button type="button" id="create-btn"
-    th:onclick="|location.href='@{/new-article}'|"
-    class="btn btn-secondary btn-sm mb-3">글 등록</button>
-
-        <!-- 1) article 개수만큼 반복 -->
+            th:onclick="|location.href='@{/new-article}'|"
+            class="btn btn-secondary btn-sm mb-3">글 등록</button>
     <div class="row-6" th:each="item : ${articles}">
         <div class="card">
             <div class="card-header" th:text="${item.id}">
-                <!-- 2) item의 id 출력 -->
             </div>
             <div class="card-body">
                 <h5 class="card-title" th:text="${item.title}"></h5>
                 <p class="card-text" th:text="${item.content}"></p>
-                <!-- 여기를 수정 -->
-                <a th:href="@{/articles/{id}(id=${item.id})}"
-                   class="btn btn-primary">보러 가기</a>
+                <a th:href="@{/articles/{id}(id=${item.id})}" class="btn btn-primary">보러가기</a>
             </div>
         </div>
         <br>
     </div>
+
+    <button type="button" class="btn btn-secondary" onclick="location.href='/logout'">로그아웃</button>
 </div>
+
+<script src="/js/article.js"></script>
 </body>
 <!--
     1) th:each 로 "article" 키에 담긴 데이터 개수만큼 반복
     2) th:text 는 반복 대상 객체의 id, "text"를 출력함
-
-
-
 -->

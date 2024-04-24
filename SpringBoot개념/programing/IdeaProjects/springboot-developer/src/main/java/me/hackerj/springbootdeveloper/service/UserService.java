@@ -24,6 +24,10 @@ public class UserService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    }
 }
 /*
     1) 패스워드를 저장할 때 시큐리티를 설정하며 패스워드 인코딩용으로 등록한

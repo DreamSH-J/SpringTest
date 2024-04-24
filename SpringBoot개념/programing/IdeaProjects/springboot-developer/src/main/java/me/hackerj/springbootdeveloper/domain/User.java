@@ -21,7 +21,7 @@ import java.util.List;
 @Getter
 @Entity
 public class User implements UserDetails {
-//    UserDetails를 상속박아 인증 객체로 사용
+//    UserDetails를 상속받아 인증 객체로 사용
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -34,9 +34,10 @@ public class User implements UserDetails {
     private String password;
 
     @Builder
-    public User(String email, String password, String auth) {
+    public User(String email, String password, String auth, String nickname) {
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
     }
     @Override   // 권한 반환
     /*
@@ -113,6 +114,17 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         // 계정이 사용 가능한지 확인하는 로직
         return true;   // true => 사용 가능
+    }
+
+    // 사용자 이름
+    @Column(name = "nickname", unique = true)
+    private String nickname;
+
+
+    // 사용자 이름 변경
+    public User update(String nickname) {
+        this.nickname = nickname;
+        return this;
     }
 }
 /*

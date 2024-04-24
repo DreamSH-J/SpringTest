@@ -12,16 +12,17 @@ spring:
     url: jdbc:h2:mem:testdb
     username: sa
 
-  h2: #H2 콘솔 활성화
+  h2: # H2 콘솔 활성화
     console:
       enabled: true
+      # OAuth2 설정
   security:
     oauth2:
       client:
         registration:
           google:
-            client-id: 6636..
-            client-secret: GOCS..
+            client-id:
+            client-secret:
             scope:
               - email
               - profile

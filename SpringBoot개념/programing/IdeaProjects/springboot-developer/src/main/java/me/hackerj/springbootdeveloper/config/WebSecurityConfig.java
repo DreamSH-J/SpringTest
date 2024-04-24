@@ -1,3 +1,4 @@
+/*
 package me.hackerj.springbootdeveloper.config;
 
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-/* ************************************시큐리티 환경설정********************************************* */
+*/
+/* ************************************시큐리티 환경설정********************************************* *//*
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -69,6 +72,7 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();     // 생성자를 만들면 알아서 암호화해줌
     }
 }
+*/
 /*
     1) 스프링 시큐리티의 모든 기능을 사용하지 않게 설정하는 코드
         즉, 인증, 인가 서비스를 모든 곳에 적용하지는 않음
@@ -110,4 +114,5 @@ public class WebSecurityConfig {
     passwordEncoder() : 비밀번호를 암호화하기 위한 인코더를 설정
 
     9) 패스워드 인코더를 빈으로 등록함
-*/
+*//*
+

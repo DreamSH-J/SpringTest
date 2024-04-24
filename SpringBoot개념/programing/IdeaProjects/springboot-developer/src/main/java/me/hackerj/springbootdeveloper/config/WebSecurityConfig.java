@@ -18,7 +18,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 */
-/* ************************************시큐리티 환경설정********************************************* *//*
+/* ************************************시큐리티 환경설정********************************************* */
+/*
 
 @Configuration
 @EnableWebSecurity
@@ -114,5 +115,5 @@ public class WebSecurityConfig {
     passwordEncoder() : 비밀번호를 암호화하기 위한 인코더를 설정
 
     9) 패스워드 인코더를 빈으로 등록함
-*//*
+*/
 
